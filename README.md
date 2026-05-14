@@ -194,6 +194,7 @@ CALCULATE( [Inventory Value],
 ```
 📁 Inventory-Intelligence-System/
 ├──  Inventory_Intelligence_System.pbix   ← Power BI dashboard
+├──  Inventory_Intelligence_System.pdf   
 ├── 📂 data/
 │   ├──Lip_Beauty_Retail.xlsx  ← Raw dataset (4 sheets)
     ├──Lip_Beauty_Retail_Cleaned.xlsx  ← Clean dataset (4 sheets)
@@ -229,7 +230,7 @@ CALCULATE( [Inventory Value],
 **Abishang Mueni**
 Data Analyst | Power BI | Excel | DAX
 
-[[LinkedIn](https://www.linkedin.com/in/abishang-mueni-6b1bb216a/)
+[LinkedIn](https://www.linkedin.com/in/abishang-mueni-6b1bb216a/)
 
 
 *This project was built as part of a portfolio strategy to demonstrate real-world data analytics value to Kenyan SMEs, walking into businesses with working dashboards built on their own business model, showing stakeholders what data-driven decision-making looks like in practice.*
