@@ -9,14 +9,14 @@ The Lip Tribe is a Kenyan beauty retail brand selling premium lip care products 
 
 This project was inspired by a [Founder Diaries Podcast](https://youtu.be/cxG8EpFUOXQ?si=Wwjwv0sI7rKNY6J5) interview featuring Kenyan entrepreneur Murugi Munyi (The Lip Tribe), where she discussed the real operational challenges facing her business like cash tied up in slow moving stock, no real-time visibility into what is selling and restocking decisions made on gut feeling rather than data.
 
-I am a data analyst approaching this from the outside I observed the business model, identified the core inventory pain points, built a simulated dataset reflecting real retail dynamics and created a fully automated Power BI dashboard that the business owner can access in real time from their phone.
+As data analyst approaching this from the outside I observed the business model, identified the core inventory pain points, built a simulated dataset reflecting real retail dynamics and created a fully automated Power BI dashboard that the business owner can access in real time from their phone.
 
-The analysis covers January to December 2025** across 4 key areas:
+The analysis covers January to December 2025 across 4 key areas:
 
-- Revenue & Profitability Performance
-- Inventory Health & Stock Classification
-- Sales Velocity & Run Rate Analysis
-- Restock Intelligence & Demand Forecasting
+- 1. Revenue & Profitability Performance
+- 2. Inventory Health & Stock Classification
+- 3. Sales Velocity & Run Rate Analysis
+- 4. Restock Intelligence & Demand Forecasting
 
 
 ## Data Structure & Initial Checks
@@ -25,26 +25,26 @@ The data model follows a star schema consisting of 4 tables with a total of 10,8
 
 | Table | Rows | Description |
 |---|---|---|
-| **Products** | 43 | Master product list — SKU, Brand, Category, Cost Price, Selling Price, Reorder Level, Lead Time |
-| **Sales** | 8,796 | Transaction-level sales records — Date, Invoice, SKU, Quantity Sold, Selling Price |
-| **Inventory_Purchases** | 146 | Restocking history — Date, SKU, Quantity Purchased, Unit Cost |
-| **Calendar** | 365 | Date dimension — Date, Year, Month, Quarter, Week |
+| **Products** | 43 | Master product list - SKU, Brand, Category, Cost Price, Selling Price, Reorder Level, Lead Time |
+| **Sales** | 8,796 | Transaction-level sales records - Date, Invoice, SKU, Quantity Sold, Selling Price |
+| **Inventory_Purchases** | 146 | Restocking history - Date, SKU, Quantity Purchased, Unit Cost |
+| **Calendar** | 365 | Date dimension - Date, Year, Month, Quarter, Week |
 
 **Relationships (Star Schema):**
 
 ```
-Calendar ─(1:M)──► Sales
-Calendar ─(1:M)──► Inventory_Purchases
-Products ─(1:M)──► Sales
-Products ─(1:M)──► Inventory_Purchases
+Calendar  - (1:M)──► Sales
+Calendar - (1:M)──► Inventory_Purchases
+Products - (1:M)──► Sales
+Products - (1:M)──► Inventory_Purchases
 ```
 
 **Data cleaning steps performed:**
 - Removed broken `Launch_date` TEXT formula column from Products
-- Removed pre-calculated `Revenue` and `Margin_Pct` columns — recalculated in DAX
+- Removed pre-calculated `Revenue` and `Margin_Pct` columns -  recalculated in DAX
 - Rebuilt `Inventory_Purchases` table with realistic restock batches spread across the year (original dataset had only one purchase batch per SKU causing negative stock across all 43 products)
 - Removed sales rows for 5 No Sales SKUs to correctly trigger `Run Rate = 9999` classification in DAX
-- Fixed all data types — dates as Date, quantities as Whole Number, prices as Integer
+- Fixed all data types - dates as Date, quantities as Whole Number, prices as Integer
 - Verified zero nulls, zero duplicate SKUs, zero duplicate invoices, zero negative quantities
 
 
@@ -52,9 +52,13 @@ Products ─(1:M)──► Inventory_Purchases
 
 ### Overview of Findings
 
-The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross margin but Ksh 435K remains locked in slow moving and dead stock cash that could be reinvested into faster moving products. The business has a clear imbalance: 29 SKUs are Fast movers driving the majority of revenue while 14 SKUs (Slow + No Sales) are silently eroding cashflow. The restock intelligence layer reveals that 10 SKUs are at critical stockout risk with fewer than 6 days of stock remaining meaning the business is simultaneously over-stocked on products nobody wants and running out of products that customers are actively buying.
+The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross margin but Ksh 435K remains locked in slow moving and dead stock cash that could be reinvested into faster moving products. 
 
-![Overview Dashboard](screenshots/overview.png)
+The business has a clear imbalance. 29 SKUs are Fast movers driving the majority of revenue while 14 SKUs (Slow + No Sales) are silently eroding cashflow. 
+
+The restock intelligence layer reveals that 10 SKUs are at critical stockout risk with fewer than 6 days of stock remaining meaning the business is simultaneously overstocked on products nobody wants and running out of products that customers are actively buying.
+
+![Overview Dashboard](https://github.com/Abishang21/Inventory-Intelligence-System/blob/master/Screenshots/Overview.png)
 
 
 
@@ -64,7 +68,7 @@ The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross mar
 
 **Total Revenue: Ksh 51M &nbsp;|&nbsp; Gross Profit: Ksh 31M &nbsp;|&nbsp; Gross Margin: 62%**
 
-- Revenue peaked in November–December reaching Ksh 5M - 6M monthly a clear seasonal pattern driven by festive gifting. January - September revenue stabilised between Ksh 2.5M - 4M per month suggesting the business is highly dependent on Q4 performance.
+- Revenue peaked in November - December reaching Ksh 5M - 6M monthly a clear seasonal pattern driven by festive gifting. January - September revenue stabilised between Ksh 2.5M - 4M per month suggesting the business is highly dependent on Q4 performance.
 
 - Gross margin held consistently at 62% across all 12 months indicating stable pricing discipline and no significant cost pressure. This is a strong foundation for scaling.
 
@@ -72,7 +76,7 @@ The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross mar
 
 - Revenue by category; Balm leads at Ksh 23M (45%)**, Oil at Ksh 14M (27%), Gloss at Ksh 14M (27%). The Balm dominance aligns with lip care market trends where treatment focused products outperform cosmetic only products.
 
-![Cash Flow Dashboard](screenshots/cashflow.png)
+![Cash Flow Dashboard](https://github.com/Abishang21/Inventory-Intelligence-System/blob/master/Screenshots/Cash%20Flow.png)
 
 
 
@@ -88,7 +92,7 @@ The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross mar
 
 - The inventory aging chart reveals LT-040 has the highest run rate days over 40 days of stock remaining while simultaneously being the top revenue SKU. This apparent contradiction resolves when we see LT-040 has high stock from aggressive purchasing not slow sales.
 
-![Inventory Dashboard](screenshots/inventory.png)
+![Inventory Dashboard](https://github.com/Abishang21/Inventory-Intelligence-System/blob/master/Screenshots/Inventory%20Health.png)
 
 
 
@@ -104,7 +108,7 @@ The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross mar
 
 - Avg Run Rate across all active SKUs is 1.18K days this high average is distorted by the 5 No Sales SKUs pulling the average up. Excluding No Sales SKUs the true average run rate is approximately 18 days firmly in the Fast category for the active product range.
 
-![Sales Dashboard](screenshots/sales.png)
+![Sales Dashboard](https://github.com/Abishang21/Inventory-Intelligence-System/blob/master/Screenshots/Sales.png)
 
 
 
@@ -116,11 +120,11 @@ The Lip Tribe generated Ksh 51M in revenue for 2025 with a healthy 62% gross mar
 
 - LT-026 requires the largest reorder of 92 units driven by its exceptionally high daily sales velocity of 4.52 units per day combined with only 22 units in stock. A stockout on LT-026 would be the most commercially damaging given it is a top revenue contributor.
 
-- The +20% safety buffer built into the Suggested Reorder Qty formula accounts for supplier lead time variability and unexpected demand spikes ensuring the business never cuts reorder quantities too fine. At 14 - day average lead time for Kenyan beauty suppliers this buffer represents approximately 2–3 days of extra cover.
+- The +20% safety buffer built into the Suggested Reorder Qty formula accounts for supplier lead time variability and unexpected demand spikes ensuring the business never cuts reorder quantities too fine. At 14 - day average lead time for Kenyan beauty suppliers this buffer represents approximately 2 - 3 days of extra cover.
 
 - Ksh 910K is needed to fully restock all alerted SKUs a concrete, actionable number that allows the CEO to make an immediate cash allocation decision rather than manually calculating per product order quantities.
 
-![Restock Dashboard](screenshots/restock.png)
+![Restock Dashboard](https://github.com/Abishang21/Inventory-Intelligence-System/blob/master/Screenshots/Restock%20Intel.png)
 
 
 
@@ -191,8 +195,8 @@ CALCULATE( [Inventory Value],
 📁 Inventory-Intelligence-System/
 ├──  Inventory_Intelligence_System.pbix   ← Power BI dashboard
 ├── 📂 data/
-│   ├──Lip_Beauty_Retail_PowerBI_Ready.xlsx  ← Raw dataset (4 sheets)
-    ├──Lip_Beauty_Retail_PowerBI_Ready.xlsx  ← Clean dataset (4 sheets)
+│   ├──Lip_Beauty_Retail.xlsx  ← Raw dataset (4 sheets)
+    ├──Lip_Beauty_Retail_Cleaned.xlsx  ← Clean dataset (4 sheets)
 ├── 📂 screenshots/
 │   ├── overview.png
 │   ├── inventory.png
@@ -225,7 +229,7 @@ CALCULATE( [Inventory Value],
 **Abishang Mueni**
 Data Analyst | Power BI | Excel | DAX
 
-[![LinkedIn](https://www.linkedin.com/in/abishang-mueni-6b1bb216a/)
+[[LinkedIn](https://www.linkedin.com/in/abishang-mueni-6b1bb216a/)
 
 
 *This project was built as part of a portfolio strategy to demonstrate real-world data analytics value to Kenyan SMEs, walking into businesses with working dashboards built on their own business model, showing stakeholders what data-driven decision-making looks like in practice.*
